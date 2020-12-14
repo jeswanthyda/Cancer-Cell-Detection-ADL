@@ -78,7 +78,7 @@ class heatmap_on_test():
         prediction_class = np.argmax(score)
         pred_class_list.append(prediction_class)
 
-        heatmap[i*slice_size:(i+1)*slice_size,j*slice_size:(j+1)*slice_size] = 1 if class_names[prediction_class] == '1positive' else 0
+        heatmap[i*slice_size:(i+1)*slice_size,j*slice_size:(j+1)*slice_size] = 1 if self.class_names[prediction_class] == '1positive' else 0
 
     return heatmap, actual_class_list, pred_class_list
 

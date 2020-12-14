@@ -4,23 +4,24 @@ import numpy as np
 from PIL import Image
 from skimage.color import rgb2gray
 import pandas as pd
+import shutil
+
 
 class Slide2Slice():
     
-  def __init__(self, slide_names : list, slides_directory_path : str, sliced_slides_dir : str, level : int, slice_size : int = 60):
+  def __init__(self, slide_names : list, slides_directory_path : str, sliced_slides_dir : str, level : int, slice_size : int = 60, save = True):
     self.slide_names = slide_names
     self.slides_directory_path = slides_directory_path
     self.level = level
     self.slice_size = slice_size
+    self.save = save
     
     if not os.path.exists(sliced_slides_dir):
       os.makedirs(sliced_slides_dir)
 
     self.level_dir = sliced_slides_dir + f'level{self.level}/'
-    if os.path.exists(self.level_dir):
-      print(f'Reset level {self.level} directory')
-      ! rm -r '$self.level_dir'
-    os.makedirs(self.level_dir)
+    if not os.path.exists(self.level_dir):
+      os.makedirs(self.level_dir)
     
   def read_slide(self, slide, x, y, level, width, height, as_float=False):
     im = slide.read_region((x,y), level, (width, height))
@@ -101,11 +102,11 @@ class Slide2Slice():
         im_name = f'{slide_name}_lvl{self.level}_x{j*slice_size}to{(j+1)*slice_size}_y{i*slice_size}to{(i+1)*slice_size}.jpeg'
         slide_slice = slide_image[i*slice_size:(i+1)*slice_size,j*slice_size:(j+1)*slice_size,:]
         mask_slice = mask_image[i*slice_size:(i+1)*slice_size,j*slice_size:(j+1)*slice_size]
-
+        
         if self.is_cancerous(mask_slice):
           #Save to Positive dir
           im = Image.fromarray(slide_slice)
-          im.save(self.positive_dir+im_name)
+          if self.save: im.save(self.positive_dir+im_name)
           positive_count += 1
           if self.is_tissue(slide_slice):
             positive_with_tissue_count += 1
@@ -114,7 +115,7 @@ class Slide2Slice():
           negative_count += 1
           if self.is_tissue(slide_slice):
             im = Image.fromarray(slide_slice)
-            im.save(self.negative_dir+im_name)
+            if self.save: im.save(self.negative_dir+im_name)
             negative_with_tissue_count += 1
 
     slide_stats = {
