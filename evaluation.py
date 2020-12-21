@@ -12,7 +12,7 @@ import tensorflow as tf
 class heatmap_on_test():
     
   def __init__(self,level,slide_name,slice_size,model,class_names):
-    self.slides_directory_path = '/content/gdrive/My Drive/slides/'
+    self.slides_directory_path = '/content/gdrive/MyDrive/test_slides/'
     self.slide_name = slide_name
     self.level = level
     self.slice_size = slice_size

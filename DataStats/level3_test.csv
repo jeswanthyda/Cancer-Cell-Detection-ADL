@@ -1,4 +1,4 @@
 ,slide_name,level,negative,positive,negative_with_tissue,positive_with_tissue
-0,tumor_096,4,643,22,255,20
-1,tumor_101,4,672,50,221,46
-2,tumor_110,4,348,127,113,122
+0,tumor_096,3,1539,27,555,27
+1,tumor_101,3,1600,82,488,81
+2,tumor_110,3,856,275,257,272
